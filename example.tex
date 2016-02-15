@@ -1,0 +1,96 @@
+% D flip-flops (DFFs) and shift register
+% Author: Martin Scharrer
+\documentclass[a4paper,landscape]{article}
+
+\usepackage{pgf,tikz}
+\usetikzlibrary{calc,arrows}
+\usetikzlibrary{circuits.logic.dff}
+\usepackage{amsmath}
+\usepackage[left=1cm,right=1cm]{geometry}
+\pagestyle{empty}
+
+\makeatletter
+
+\makeatother
+
+\begin{document}
+
+\begin{tikzpicture}[font=\sffamily,>=triangle 45]
+  \def\N{7}  % Number of Flip-Flops minus one
+
+  % Place FFs
+  \foreach \m in {0,...,\N}
+    \node [shape=dffsr] (DFF\m) at ($ 3*(\m,0) $) {Bit \#\m};
+
+  % Connect FFs (Q1 with D1, etc.)
+  \def\p{0}  % Used to save the previous number
+  \foreach \m in {1,...,\N} { % Note that it starts with 1, not 0
+    \draw [->] (DFF\p.Q) -- (DFF\m.D);
+    \global\let\p\m
+  }
+
+  % Connect and label data in- and output port
+  \draw [<-] (DFF0.D) -- +(-1,0) node [anchor=east] {input} ;
+  \draw [->] (DFF\N.Q) -- +(1,0) node [anchor=west] {output};
+
+  % 'Reset' port label
+  \path (DFF0) +(-2cm,+2cm) coordinate (temp)
+    node [anchor=east] {reset};
+  % Connect resets
+  \foreach \m in {0,...,\N}
+    \draw [->] (temp) -| (DFF\m.R);
+
+  % 'Set' port label
+  \path (DFF0) +(-2cm,-2cm) coordinate (temp)
+    node [anchor=east] {set};
+  % Connect sets
+  \foreach \m in {0,...,\N}
+    \draw [->] (temp) -| (DFF\m.S);
+
+  % Clock port label
+  \path (DFF0) +(-2cm,-2.5cm) coordinate (temp)
+    node [anchor=east] {clock};
+  \foreach \m in {0,...,\N}
+    \draw [->] (temp) -| ($ (DFF\m.CLK) + (-5mm,0) $) --(DFF\m.CLK);
+
+  % Clock port label
+  \path (DFF0) +(-2cm,-3cm) coordinate (temp)
+    node [anchor=east] {clock enable};
+  \foreach \m in {0,...,\N}
+    \draw [->] (temp) -| ($ (DFF\m.CE) + (-7.5mm,0) $) --(DFF\m.CE);
+\end{tikzpicture}
+
+\vspace{4cm}
+
+\begin{tikzpicture}[font=\sffamily,>=triangle 45]
+  \def\N{7}  % Number of Flip-Flops minus one
+
+  % Place FFs
+  \foreach \m in {0,...,\N}
+    \node [shape=dff] (DFF\m) at ($ 3*(\m,0) $) {Bit \#\m};
+
+  % Connect FFs (Q1 with D1, etc.)
+  \def\p{0}  % Used to save the previous number
+  \foreach \m in {1,...,\N} { % Note that it starts with 1, not 0
+    \draw [->] (DFF\p.Q) -- (DFF\m.D);
+    \global\let\p\m
+  }
+
+  % Connect and label data in- and output port
+  \draw [<-] (DFF0.D) -- +(-1,0) node [anchor=east] {input} ;
+  \draw [->] (DFF\N.Q) -- +(1,0) node [anchor=west] {output};
+
+  % Clock port label
+  \path (DFF0) +(-2cm,-2.5cm) coordinate (temp)
+    node [anchor=east] {clock};
+  \foreach \m in {0,...,\N}
+    \draw [->] (temp) -| ($ (DFF\m.CLK) + (-5mm,0) $) --(DFF\m.CLK);
+
+  % Clock port label
+  \path (DFF0) +(-2cm,-3cm) coordinate (temp)
+    node [anchor=east] {clock enable};
+%   \foreach \m in {0,...,\N}
+%     \draw [->] (temp) -| ($ (DFF\m.CE) + (-7.5mm,0) $) --(DFF\m.CE);
+\end{tikzpicture}
+
+\end{document}

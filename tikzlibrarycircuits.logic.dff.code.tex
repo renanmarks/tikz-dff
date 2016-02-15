@@ -1,0 +1,27 @@
+% Copyright 2009 by Martin Scharrer
+% From: http://www.texample.net/tikz/examples/d-flip-flops-and-shift-register/
+% PGF/Tikz Library by Renan Albuquerque Marks
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/generic/pgf/licenses/LICENSE for more details.
+
+\usetikzlibrary{circuits.logic}
+\usepgflibrary{shapes.gates.logic.dff}
+
+% Key to add font macros to the current font
+\tikzset{add font/.code={\expandafter\def\expandafter\tikz@textfont\expandafter{\tikz@textfont#1}}} 
+
+% Define default style for this node
+\tikzset{flip flop/port labels/.style={font=\scriptsize}}
+\tikzset{every dff node/.style={draw,minimum width=2cm,minimum 
+height=2.828427125cm,very thick,inner sep=1mm,outer sep=0pt,cap=round}}
+
+\tikzset{every dffsr node/.style={draw,minimum width=2cm,minimum 
+height=2.828427125cm,very thick,inner sep=1mm,outer sep=0pt,cap=round}}
+
+\endinput
+
